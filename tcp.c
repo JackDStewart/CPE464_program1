@@ -64,9 +64,10 @@ void tcp(const unsigned char *packet) {
 }
 
 uint16_t tcp_checksum(const unsigned char *packet) {
+    
+    // pseudo-header
     extern uint8_t source_ip[4], dest_ip[4];
     pseudo_tcp_hdr_t pseudo_hdr;
-
     memcpy(pseudo_hdr.source_ip, source_ip, 4);
     memcpy(pseudo_hdr.dest_ip, dest_ip, 4);
 
@@ -77,14 +78,14 @@ uint16_t tcp_checksum(const unsigned char *packet) {
     pseudo_hdr.protocol = 6; // TCP
     pseudo_hdr.seg_length = htons(ip_total_length - ip_header_len);
 
+    // new buffer for pseudo-header + tcp header
     size_t buf_len = sizeof(pseudo_tcp_hdr_t) + ntohs(pseudo_hdr.seg_length);
     uint8_t buf[buf_len];
 
-    /* pseudo-header */
     memcpy(buf, &pseudo_hdr, sizeof(pseudo_tcp_hdr_t));
     memcpy(buf + sizeof(pseudo_tcp_hdr_t), packet, ntohs(pseudo_hdr.seg_length));
 
-    /* zero checksum field inside copied TCP header */
+    // zero checksum field in new header 
     ((tcp_hdr_t *)(buf + sizeof(pseudo_tcp_hdr_t)))->checksum = 0;
     
     return (uint16_t)in_cksum((unsigned short*)buf, buf_len);

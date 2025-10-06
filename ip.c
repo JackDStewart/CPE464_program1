@@ -15,17 +15,18 @@ uint8_t protocol_type = 0;
 
 void ip(const unsigned char *packet) {
     if (packet == NULL) return;
-
     ip_hdr_t hdr;
-    /* copy from network packet into aligned object */
     memcpy(&hdr, packet, sizeof(hdr));
-
+    
+    // global variables
+    memcpy(source_ip, hdr.source, 4);
+    memcpy(dest_ip, hdr.dest, 4);
     ip_total_length = ntohs(hdr.total_length);
     ip_header_len = (hdr.ver_ihl & 0x0F) * 4;
+    protocol_type = hdr.protocol;
 
     // protocols
     char *protocol;
-    protocol_type = hdr.protocol;
     switch (hdr.protocol) {
         case 1:  
             protocol = "ICMP";
@@ -39,14 +40,12 @@ void ip(const unsigned char *packet) {
         default:
             protocol = "Unknown";
     }
+
     // checksum
-    unsigned char ip_hdr_copy[60];                  // max IPv4 header = 60
+    unsigned char ip_hdr_copy[ip_header_len];
     memcpy(ip_hdr_copy, packet, ip_header_len);
     ip_hdr_copy[10] = 0; ip_hdr_copy[11] = 0;        // zero checksum field
-    unsigned short copy_checksum = in_cksum((unsigned short*)ip_hdr_copy, ip_header_len);
-
-    memcpy(source_ip, hdr.source, 4);
-    memcpy(dest_ip, hdr.dest, 4);
+    uint16_t copy_checksum = (uint16_t)in_cksum((unsigned short*)ip_hdr_copy, ip_header_len);
     
     struct in_addr sender_ip, dst_ip;
     memcpy(&sender_ip, &hdr.source, sizeof(sender_ip));

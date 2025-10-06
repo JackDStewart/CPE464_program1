@@ -4,6 +4,7 @@
 #include "ethernet.h"
 
 uint16_t ethernet(const unsigned char *packet) {
+    if (packet == NULL) return 0;
     ethernet_hdr_t eth_hdr;
     memcpy(&eth_hdr, packet, sizeof(eth_hdr));
 
@@ -27,7 +28,7 @@ uint16_t ethernet(const unsigned char *packet) {
             break;
 
         default:
-            eth_type_string = "unknown";
+            eth_type_string = "Unknown";
             break;
     }
     printf("\t\tType: %s\n\n", eth_type_string);

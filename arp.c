@@ -5,16 +5,15 @@
 
 void arp(const unsigned char *packet) {
     if (packet == NULL) return;
-
     arp_hdr_t arp_hdr;
     memcpy(&arp_hdr, packet, sizeof(arp_hdr_t));
 
-    // Interpret opcode
+    // Opcode
     uint16_t op = ntohs(arp_hdr.operation);
     const char *op_str = (op == 1) ? "Request" :
                          (op == 2) ? "Reply"   : "Unknown";
 
-    // Build printable IPv4 addresses (bytes are already in network order)
+    // IP addresses
     struct in_addr sender_ip, target_ip;
     memcpy(&sender_ip, arp_hdr.spa, sizeof(sender_ip));
     memcpy(&target_ip, arp_hdr.tpa, sizeof(target_ip));

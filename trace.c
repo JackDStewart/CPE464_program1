@@ -41,8 +41,10 @@ int main(int argc, char *argv[]){
             switch (eth_type) {
                 case 0x0800:  // IPv4
                     ip(packet + sizeof(ethernet_hdr_t));
-                    extern unsigned int ip_header_len;
+                    
                     // ip protocols
+                    extern unsigned int ip_header_len;
+                    extern uint8_t protocol_type;
                     switch (protocol_type) {
                         case 1:  // ICMP
                             icmp(packet + sizeof(ethernet_hdr_t) + ip_header_len);

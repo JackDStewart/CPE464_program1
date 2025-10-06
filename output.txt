@@ -186,6 +186,7 @@ Packet number: 10  Packet Len: 74
 		Sender IP: 64.233.187.99
 		Dest IP: 192.168.1.102
 
+	Unknown IP Protocol
 
 Packet number: 11  Packet Len: 74
 
@@ -290,3 +291,4 @@ Packet number: 16  Packet Len: 42
 		Sender IP: 192.168.1.102
 		Target MAC: 00:20:18:dc:ae:ab
 		Target IP: 192.168.1.105
+

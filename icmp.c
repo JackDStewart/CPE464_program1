@@ -5,17 +5,16 @@
 
 void icmp(const unsigned char *packet) {
     if (packet == NULL) return;
-
     icmp_hdr_t icmp_hdr;
     memcpy(&icmp_hdr, packet, sizeof(icmp_hdr_t));
 
     printf("\tICMP Header\n");
     printf("\t\tType: ");
     switch (icmp_hdr.type) {
-        case 0: /* ICMP_ECHOREPLY */
+        case 0: // ICMP_ECHOREPLY
             printf("Reply\n");
             break;
-        case 8: /* ICMP_ECHO */
+        case 8: // ICMP_ECHO
             printf("Request\n");
             break;
         default:

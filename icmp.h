@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-/* ICMP header (common layout) */
+// ICMP header
 typedef struct __attribute__((packed)) {
     uint8_t  type;
     uint8_t  code;

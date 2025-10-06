@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-/* TCP header (basic fixed portion) */
+// TCP header (basic fixed portion)
 typedef struct __attribute__((packed)) {
     uint16_t src_port;
     uint16_t dst_port;
@@ -16,7 +16,7 @@ typedef struct __attribute__((packed)) {
     uint8_t  data_offset:4;
     uint8_t  reserved:4;
 #endif
-    uint8_t  flags;             /* Control bits: CWR|ECE|URG|ACK|PSH|RST|SYN|FIN */
+    uint8_t  flags;             
     uint16_t window;
     uint16_t checksum;
     uint16_t urg_ptr;
